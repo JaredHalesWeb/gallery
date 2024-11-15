@@ -2,17 +2,24 @@
 
 import React from 'react';
 
-const MainContent = ({ artist, songs }) => {
+const MainContent = ({ songs, onPlaySong }) => {
+    console.log('Rendering songs:', songs);  // Log songs to ensure data is passed
+
     return (
         <div className="w-3/4 p-6">
-            <h1 className="text-4xl font-bold mb-4">{artist.name}</h1>
-            <p className="mb-6">{artist.description}</p>
-            <h2 className="text-2xl font-semibold mb-4">Popular Songs</h2>
-            <ul className="space-y-2">
+            <h1 className="text-4xl font-bold mb-4 text-black">Tracks</h1>
+            <div className="grid grid-cols-3 gap-4">
                 {songs.map((song, index) => (
-                    <li key={index} className="p-2 bg-gray-200 rounded">{song.title}</li>
+                    <div 
+                        key={index} 
+                        className="p-4 bg-gray-200 rounded cursor-pointer" 
+                        onClick={() => onPlaySong(song)}
+                    >
+                        <p className="text-black">{song.title}</p>
+                        <p className="text-black">{song.artist.name}</p>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

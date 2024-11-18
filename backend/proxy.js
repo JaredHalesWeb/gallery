@@ -1,17 +1,17 @@
 // backend/server.js
 
 const express = require('express');
-const request = require('request');
+const axios = require('axios');
 const cors = require('cors');
 const querystring = require('querystring');
 const app = express();
 
-const client_id = 'YOUR_CLIENT_ID';
-const client_secret = 'YOUR_CLIENT_SECRET';
-const redirect_uri = 'http://localhost:8889/callback';
+const client_id = 'a13bd92348f34ca89a81e423bd115420'; // Your Spotify Client ID
+const client_secret = '0b249c925daa4879a4910c9e2a3384f5'; // Your Spotify Client Secret
+const redirect_uri = 'http://localhost:8889/callback'; // Your redirect URI
 
 app.use(cors());
-
+    
 app.get('/login', function(req, res) {
     const scope = 'user-read-private user-read-email';
     res.redirect('https://accounts.spotify.com/authorize?' +
@@ -23,35 +23,30 @@ app.get('/login', function(req, res) {
         }));
 });
 
-app.get('/callback', function(req, res) {
+app.get('/callback', async function(req, res) {
     const code = req.query.code || null;
     const authOptions = {
+        method: 'post',
         url: 'https://accounts.spotify.com/api/token',
-        form: {
+        data: querystring.stringify({
             code: code,
             redirect_uri: redirect_uri,
             grant_type: 'authorization_code'
-        },
+        }),
         headers: {
-            'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
-        },
-        json: true
+            'Authorization': 'Basic ' + Buffer.from(client_id + ':' + client_secret).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
     };
 
-    request.post(authOptions, function(error, response, body) {
-        if (!error && response.statusCode === 200) {
-            const access_token = body.access_token;
-            res.redirect('http://localhost:3000/#' +
-                querystring.stringify({
-                    access_token: access_token
-                }));
-        } else {
-            res.redirect('/#' +
-                querystring.stringify({
-                    error: 'invalid_token'
-                }));
-        }
-    });
+    try {
+        const response = await axios(authOptions);
+        const { access_token } = response.data;
+        res.redirect('http://localhost:3000/#' + querystring.stringify({ access_token }));
+    } catch (error) {
+        console.error('Error getting tokens:', error);
+        res.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
+    }
 });
 
 app.listen(8889, () => {

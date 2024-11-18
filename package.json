@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start:proxy": "node backend/proxy.js",
+    "start:next": "next dev",
+    "start:all": "concurrently \"npm run start:proxy\" \"npm run start:next\""
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "next": "^15.0.3",
@@ -17,6 +21,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "concurrently": "^9.1.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8",

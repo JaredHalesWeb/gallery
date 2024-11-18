@@ -1,9 +1,17 @@
 // src/app/components/PlaybackUI.js
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
 
-const PlaybackUI = ({ currentSong, onPrevSong, onNextSong }) => {
+// var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
+// var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
+
+const PlaybackUI = ({ currentSong, onPrevSong, onNextSong, accessToken }) => {
+    const [player, setPlayer] = useState(undefined);
+    const [is_paused, setPaused] = useState(false);
+    const [is_active, setActive] = useState(false);
+
+    console.log(accessToken);
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -11,12 +19,10 @@ const PlaybackUI = ({ currentSong, onPrevSong, onNextSong }) => {
         document.body.appendChild(script);
 
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'YOUR_SPOTIFY_ACCESS_TOKEN';
             const player = new Spotify.Player({
                 name: 'Web Playback SDK',
-                getOAuthToken: cb => { cb(token); }
+                getOAuthToken: cb => { cb(accessToken); }
             });
-
             player.addListener('ready', ({ device_id }) => {
                 console.log('Ready with Device ID', device_id);
                 if (currentSong) {
@@ -25,7 +31,7 @@ const PlaybackUI = ({ currentSong, onPrevSong, onNextSong }) => {
                         body: JSON.stringify({ uris: [currentSong.uri] }),
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
+                            'Authorization': `Bearer ${accessToken}`
                         },
                     });
                 }
@@ -37,26 +43,28 @@ const PlaybackUI = ({ currentSong, onPrevSong, onNextSong }) => {
         return () => {
             document.body.removeChild(script);
         };
-    }, [currentSong]);
-
+    }, [currentSong, accessToken]);
+    if (!currentSong) return null
     return (
-        <div className="fixed bottom-0 w-full p-4 bg-gray-900 text-white flex flex-col items-center">
-            <div className="w-full">
-                <h3 className="text-lg">{currentSong ? currentSong.name : "No song playing"}</h3>
-                <p className="text-sm">{currentSong ? currentSong.artists[0].name : ""}</p>
+        <>
+            <div className="container">
+                <div className="main-wrapper">
+                    <img src={currentSong?.album?.images[0].url} 
+                         className="now-playing__cover" alt="" />
+    
+                    <div className="now-playing__side">
+                        <div className="now-playing__name">{
+                                      currentSong?.name
+                                      }</div>
+    
+                        <div className="now-playing__artist">{
+                                      currentSong?.artists[0].name
+                                      }</div>
+                    </div>
+                </div>
             </div>
-            <div className="flex items-center space-x-4 mt-4">
-                <button className="p-2 bg-gray-700 rounded" onClick={onPrevSong}>Prev</button>
-                <button className="p-2 bg-gray-700 rounded" onClick={() => {
-                    const player = new Spotify.Player({
-                        getOAuthToken: cb => { cb('YOUR_SPOTIFY_ACCESS_TOKEN'); }
-                    });
-                    player.togglePlay();
-                }}>Play</button>
-                <button className="p-2 bg-gray-700 rounded" onClick={onNextSong}>Next</button>
-            </div>
-        </div>
-    );
-};
+         </>
+    )
+}    
 
 export default PlaybackUI;

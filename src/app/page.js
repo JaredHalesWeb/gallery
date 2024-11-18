@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Sidebar from '../app/components/Sidebar';
 import MainContent from '../app/components/MainContent';
 import SearchBar from '../app/components/SearchBar';
@@ -38,14 +39,15 @@ const HomePage = () => {
 
     const fetchPopularSongs = async (token) => {
         try {
-            const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
+            const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const data = await response.json();
-            if (data.items && data.items.length > 0) {
-                setSongs(data.items);
+            // console.log(response);
+            if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
+                // console.log(response);
+                setSongs(response.data.albums.items);
             } else {
                 console.error('No popular tracks found.');
             }
@@ -56,14 +58,13 @@ const HomePage = () => {
 
     const fetchSongs = async (query) => {
         try {
-            const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track`, {
+            const response = await axios.get(`https://api.spotify.com/v1/search?q=${query}&type=track`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            const data = await response.json();
-            if (data.tracks && data.tracks.items.length > 0) {
-                setSongs(data.tracks.items);
+            if (response.data.tracks && response.data.tracks.items.length > 0) {
+                setSongs(response.data.tracks.items);
             } else {
                 console.error('No tracks found in response.');
             }
@@ -100,6 +101,7 @@ const HomePage = () => {
                     currentSong={currentSong} 
                     onPrevSong={handlePrevSong} 
                     onNextSong={handleNextSong} 
+                    accessToken={accessToken}
                 />
             )}
         </div>

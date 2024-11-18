@@ -5,45 +5,54 @@ import Script from 'next/script';
 
 const PlaybackUI = ({ currentSong, onPrevSong, onNextSong }) => {
     useEffect(() => {
-        if (currentSong && window.DZ) {
-            window.DZ.player.playTracks([currentSong.id]);
-        }
+        const script = document.createElement('script');
+        script.src = 'https://sdk.scdn.co/spotify-player.js';
+        script.async = true;
+        document.body.appendChild(script);
+
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = 'YOUR_SPOTIFY_ACCESS_TOKEN';
+            const player = new Spotify.Player({
+                name: 'Web Playback SDK',
+                getOAuthToken: cb => { cb(token); }
+            });
+
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+                if (currentSong) {
+                    window.fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ uris: [currentSong.uri] }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                    });
+                }
+            });
+
+            player.connect();
+        };
+
+        return () => {
+            document.body.removeChild(script);
+        };
     }, [currentSong]);
 
     return (
         <div className="fixed bottom-0 w-full p-4 bg-gray-900 text-white flex flex-col items-center">
-            <Script
-                src="https://e-cdns-files.dzcdn.net/js/min/dz.js"
-                strategy="afterInteractive"
-                onLoad={() => {
-                    console.log('Deezer SDK loaded');
-                    if (!document.getElementById('dz-root')) {
-                        console.error('dz-root element not found.');
-                    } else {
-                        window.DZ.init({
-                            appId: 'YOUR_DEEZER_APP_ID',
-                            channelUrl: 'http://localhost:3000/callback',
-                            player: {
-                                container: 'dz-root',
-                                width: 300,
-                                height: 300,
-                                playlist: true,
-                                autoplay: true,
-                                onload: function() {
-                                    console.log('Deezer player is ready');
-                                }
-                            }
-                        });
-                    }
-                }}
-            />
             <div className="w-full">
-                <h3 className="text-lg">{currentSong ? currentSong.title : "No song playing"}</h3>
-                <p className="text-sm">{currentSong ? currentSong.artist.name : ""}</p>
+                <h3 className="text-lg">{currentSong ? currentSong.name : "No song playing"}</h3>
+                <p className="text-sm">{currentSong ? currentSong.artists[0].name : ""}</p>
             </div>
             <div className="flex items-center space-x-4 mt-4">
                 <button className="p-2 bg-gray-700 rounded" onClick={onPrevSong}>Prev</button>
-                <button className="p-2 bg-gray-700 rounded" onClick={() => window.DZ.player.play()}>Play</button>
+                <button className="p-2 bg-gray-700 rounded" onClick={() => {
+                    const player = new Spotify.Player({
+                        getOAuthToken: cb => { cb('YOUR_SPOTIFY_ACCESS_TOKEN'); }
+                    });
+                    player.togglePlay();
+                }}>Play</button>
                 <button className="p-2 bg-gray-700 rounded" onClick={onNextSong}>Next</button>
             </div>
         </div>

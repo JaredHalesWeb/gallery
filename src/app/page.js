@@ -12,19 +12,40 @@ import '../app/globals.css';
 const HomePage = () => {
     const [songs, setSongs] = useState([]);
     const [currentSong, setCurrentSong] = useState(null);
+    const [accessToken, setAccessToken] = useState('');
 
     useEffect(() => {
-        fetchPopularSongs();
+        const hash = window.location.hash
+            .substring(1)
+            .split("&")
+            .reduce((initial, item) => {
+                if (item) {
+                    const parts = item.split("=");
+                    initial[parts[0]] = decodeURIComponent(parts[1]);
+                }
+                return initial;
+            }, {});
+        window.location.hash = "";
+
+        const token = hash.access_token;
+        if (token) {
+            setAccessToken(token);
+            fetchPopularSongs(token);
+        } else {
+            window.location.href = 'http://localhost:8889/login';
+        }
     }, []);
 
-    const fetchPopularSongs = async (index = 0, limit = 10) => {
+    const fetchPopularSongs = async (token) => {
         try {
-            const response = await fetch(`http://localhost:8889/api/deezer/chart?index=${index}&limit=${limit}`);
+            const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             const data = await response.json();
-            console.log('Deezer API Response:', data);
-            if (data.tracks && data.tracks.data.length > 0) {
-                console.log('Popular tracks found:', data.tracks.data);
-                setSongs(data.tracks.data);
+            if (data.items && data.items.length > 0) {
+                setSongs(data.items);
             } else {
                 console.error('No popular tracks found.');
             }
@@ -33,14 +54,16 @@ const HomePage = () => {
         }
     };
 
-    const fetchSongs = async (query, index = 0, limit = 10) => {
+    const fetchSongs = async (query) => {
         try {
-            const response = await fetch(`http://localhost:8889/api/deezer/search?q=${query}&index=${index}&limit=${limit}`);
+            const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
             const data = await response.json();
-            console.log('Deezer API Response:', data);
-            if (data.data && data.data.length > 0) {
-                console.log('Tracks found:', data.data);
-                setSongs(data.data);
+            if (data.tracks && data.tracks.items.length > 0) {
+                setSongs(data.tracks.items);
             } else {
                 console.error('No tracks found in response.');
             }

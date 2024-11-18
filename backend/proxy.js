@@ -1,38 +1,59 @@
-// backend/proxy.js
+// backend/server.js
 
 const express = require('express');
 const request = require('request');
 const cors = require('cors');
+const querystring = require('querystring');
 const app = express();
+
+const client_id = 'YOUR_CLIENT_ID';
+const client_secret = 'YOUR_CLIENT_SECRET';
+const redirect_uri = 'http://localhost:8889/callback';
 
 app.use(cors());
 
-app.get('/api/deezer/search', (req, res) => {
-    const query = req.query.q;
-    const index = req.query.index || 0;
-    const limit = req.query.limit || 10;
-    const deezerApiUrl = `https://api.deezer.com/search?q=${query}&index=${index}&limit=${limit}`;
-    request(deezerApiUrl, (error, response, body) => {
-        if (error) {
-            return res.status(500).send(error);
+app.get('/login', function(req, res) {
+    const scope = 'user-read-private user-read-email';
+    res.redirect('https://accounts.spotify.com/authorize?' +
+        querystring.stringify({
+            response_type: 'code',
+            client_id: client_id,
+            scope: scope,
+            redirect_uri: redirect_uri
+        }));
+});
+
+app.get('/callback', function(req, res) {
+    const code = req.query.code || null;
+    const authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+            code: code,
+            redirect_uri: redirect_uri,
+            grant_type: 'authorization_code'
+        },
+        headers: {
+            'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
+        },
+        json: true
+    };
+
+    request.post(authOptions, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            const access_token = body.access_token;
+            res.redirect('http://localhost:3000/#' +
+                querystring.stringify({
+                    access_token: access_token
+                }));
+        } else {
+            res.redirect('/#' +
+                querystring.stringify({
+                    error: 'invalid_token'
+                }));
         }
-        res.send(body);
     });
 });
 
-app.get('/api/deezer/chart', (req, res) => {
-    const index = req.query.index || 0;
-    const limit = req.query.limit || 10;
-    const deezerApiUrl = `https://api.deezer.com/chart?index=${index}&limit=${limit}`;
-    request(deezerApiUrl, (error, response, body) => {
-        if (error) {
-            return res.status(500).send(error);
-        }
-        res.send(body);
-    });
-});
-
-const PORT = 8889;
-app.listen(PORT, () => {
-    console.log(`Proxy server running on port ${PORT}`);
+app.listen(8889, () => {
+    console.log('Listening on 8889');
 });

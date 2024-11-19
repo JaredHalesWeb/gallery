@@ -49,6 +49,32 @@ app.get('/callback', async function(req, res) {
     }
 });
 
+// Server-side token refresh route
+app.get('/refresh_token', async function(req, res) {
+    const refresh_token = req.query.refresh_token;
+    const authOptions = {
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        data: querystring.stringify({
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token
+        }),
+        headers: {
+            'Authorization': 'Basic ' + Buffer.from(client_id + ':' + client_secret).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    };
+
+    try {
+        const response = await axios(authOptions);
+        res.send(response.data);
+    } catch (error) {
+        console.error('Error refreshing token:', error);
+        res.status(500).send('Failed to refresh token');
+    }
+});
+
+
 app.listen(8889, () => {
     console.log('Listening on 8889');
 });

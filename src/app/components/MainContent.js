@@ -1,10 +1,54 @@
 // src/components/MainContent.js
+'use client';
+import React, { useContext, useEffect, useState } from 'react';
+import { SpotifyTokenContext } from '../context/SpotifyProvider';
+import axios from 'axios';
 
-import React from 'react';
+const MainContent = () => {
+    const {accessToken} = useContext(SpotifyTokenContext);
+    const [songs, setSongs] = useState([]);
 
-const MainContent = ({ songs, onPlaySong }) => {
-    console.log('Rendering songs:', songs);  // Log songs to ensure data is passed
-
+    // const handleSearch = (query) => {
+    //     fetchSongs(query);
+    //   };
+      
+      const fetchPopularSongs = async () => {
+        try {
+          const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          });
+          if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
+            setSongs(response.data.albums.items);
+          } else {
+            console.error('No popular tracks found.');
+          }
+        } catch (error) {
+          console.error('Error fetching popular songs:', error);
+        }
+      };
+    
+  const fetchSongs = async (query) => {
+    try {
+    query = query || ''
+      const response = await axios.get(`https://api.spotify.com/v1/search?q=${query}&type=track`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (response.data.tracks && response.data.tracks.items.length > 0) {
+        setSongs(response.data.tracks.items);
+      } else {
+        console.error('No tracks found in response.');
+      }
+    } catch (error) {
+      console.error('Error fetching songs:', error);
+    }
+  };
+    useEffect(() => {
+        if(accessToken) fetchPopularSongs();
+    }, [accessToken])
     return (
         <div className="w-3/4 p-6">
             <h1 className="text-4xl font-bold mb-4 text-black">Tracks</h1>
@@ -18,7 +62,11 @@ const MainContent = ({ songs, onPlaySong }) => {
                         <div 
                             key={index} 
                             className="rounded cursor-pointer relative bg-cover bg-center" 
-                            onClick={() => onPlaySong(song)}
+                            onClick={() => {
+                                console.log(song);
+                                window.open(song.external_urls.spotify)
+                                onPlaySong(song)}
+                            }
                             style={{
                                 backgroundImage: `url(${albumArt})`,
                                 width: '100%',   // Scaled down width to 70%

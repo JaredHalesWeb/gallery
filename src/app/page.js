@@ -13,13 +13,11 @@ const HomePage = () => {
   return (
     <SpotifyProvider>
       <div className="flex flex-col h-screen">
-        {/* s */}
         <div className="flex flex-1">
           <Sidebar />
           <MainContent />
         </div>
-          <PlaybackUI
-          />
+          <PlaybackUI />
       </div>
     </SpotifyProvider>
   );

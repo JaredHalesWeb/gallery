@@ -64,7 +64,7 @@ const MainContent = () => {
                             className="rounded cursor-pointer relative bg-cover bg-center" 
                             onClick={() => {
                                 console.log(song);
-                                window.open(song.external_urls.spotify)
+                                window.open(song.uri)
                                 onPlaySong(song)}
                             }
                             style={{

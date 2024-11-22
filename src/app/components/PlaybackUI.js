@@ -9,45 +9,27 @@ const PlaybackUI = () => {
     const [duration, setDuration] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    useEffect(() => {
-        if (spotify?.player) {
-            const player = spotify.player;
+    // useEffect(() => {
+    //     if (spotify?.player) {
+    //         const player = spotify.player;
 
-            player.addListener('player_state_changed', (state) => {
-                if (state) {
-                    setDuration(state.duration);
-                    setProgress(state.position);
-                    setIsPlaying(!state.paused);
-                }
-            });
+    //         player.addListener('player_state_changed', (state) => {
+    //             if (state) {
+    //                 setDuration(state.duration);
+    //                 setProgress(state.position);
+    //                 setIsPlaying(!state.paused);
+    //             }
+    //         });
 
-            player.addListener('initialization_error', ({ message }) => {
-                console.error('Initialization Error:', message);
-            });
-
-            player.addListener('authentication_error', ({ message }) => {
-                console.error('Authentication Error:', message);
-            });
-
-            player.addListener('account_error', ({ message }) => {
-                console.error('Account Error:', message);
-            });
-
-            player.addListener('playback_error', ({ message }) => {
-                console.error('Playback Error:', message);
-            });
-
-            player.connect();
-
-            return () => {
-                player.removeListener('player_state_changed');
-                player.removeListener('initialization_error');
-                player.removeListener('authentication_error');
-                player.removeListener('account_error');
-                player.removeListener('playback_error');
-            };
-        }
-    }, [spotify?.player]);
+    //         return () => {
+    //             player.removeListener('player_state_changed');
+    //             player.removeListener('initialization_error');
+    //             player.removeListener('authentication_error');
+    //             player.removeListener('account_error');
+    //             player.removeListener('playback_error');
+    //         };
+    //     }
+    // }, [spotify?.player]);
 
     const togglePlay = () => {
         if (spotify.player) {

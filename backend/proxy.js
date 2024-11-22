@@ -11,16 +11,30 @@ const client_secret = '0b249c925daa4879a4910c9e2a3384f5'; // Your Spotify Client
 const redirect_uri = 'http://localhost:8889/callback'; // Your redirect URI
 
 app.use(cors());
+
+var generateRandomString = function (length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  
+    for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  };
     
 app.get('/login', function(req, res) {
-    const scope = 'user-read-private user-read-email';
-    res.redirect('https://accounts.spotify.com/authorize?' +
-        querystring.stringify({
-            response_type: 'code',
-            client_id: client_id,
-            scope: scope,
-            redirect_uri: redirect_uri
-        }));
+
+  var state = generateRandomString(16);
+  var scope = 'user-read-private user-read-email streaming user-top-read';
+
+  res.redirect('https://accounts.spotify.com/authorize?' +
+    querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+    }));
 });
 
 app.get('/callback', async function(req, res) {
@@ -73,7 +87,6 @@ app.get('/refresh_token', async function(req, res) {
         res.status(500).send('Failed to refresh token');
     }
 });
-
 
 app.listen(8889, () => {
     console.log('Listening on 8889');

@@ -22,7 +22,6 @@ export default function SpotifyProvider({ children }) {
       const token = hash.access_token;
       if (token) {
         setAccessToken(token);
-        // fetchPopularSongs(token);
         // load spotify SDK
         const script = document.createElement('script');
         script.src = 'https://sdk.scdn.co/spotify-player.js';

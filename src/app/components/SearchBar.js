@@ -11,10 +11,10 @@ const SearchBar = ({ onSearch }) => {
     };
 
     return (
-        <form onSubmit={handleSearch} className="w-full p-4 bg-gray-100">
+        <form onSubmit={handleSearch} className="w-full p-4 bg-gray-100 flex justify-center">
             <input
                 type="text"
-                className="w-3/4 p-2 border rounded"
+                className="w-3/4 p-2 border rounded text-black"
                 placeholder="Search for songs or artists..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}

@@ -2,32 +2,37 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { SpotifyTokenContext } from '../context/SpotifyProvider';
+import SearchBar from './SearchBar';
 import axios from 'axios';
 
 const MainContent = () => {
     const {accessToken} = useContext(SpotifyTokenContext);
     const [songs, setSongs] = useState([]);
 
-    // const handleSearch = (query) => {
-    //     fetchSongs(query);
-    //   };
-      
-      const fetchPopularSongs = async () => {
-        try {
-          const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            }
-          });
-          if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
-            setSongs(response.data.albums.items);
-          } else {
-            console.error('No popular tracks found.');
+    const handleSearch = async (query) => {
+      if (query) {
+        await fetchSongs(query);  // Fetch songs based on search query
+      } else {
+        fetchPopularSongs();
+      }
+    };
+    
+    const fetchPopularSongs = async () => {
+      try {
+        const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
           }
-        } catch (error) {
-          console.error('Error fetching popular songs:', error);
+        });
+        if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
+          setSongs(response.data.albums.items);
+        } else {
+          console.error('No popular tracks found.');
         }
-      };
+      } catch (error) {
+        console.error('Error fetching popular songs:', error);
+      }
+    };
     
   const fetchSongs = async (query) => {
     try {
@@ -46,17 +51,20 @@ const MainContent = () => {
       console.error('Error fetching songs:', error);
     }
   };
+
     useEffect(() => {
         if(accessToken) fetchPopularSongs();
     }, [accessToken])
     return (
         <div className="w-3/4 p-6">
+          <SearchBar onSearch={handleSearch} />
             <h1 className="text-4xl font-bold mb-4 text-black">Tracks</h1>
             <div className="grid grid-cols-5 gap-2">  {/* Reduced the gap between columns */}
                 {songs.map((song, index) => {
                     const albumName = song ? song.name : 'Unknown Album';
                     const artistName = song.artists && song.artists.length > 0 ? song.artists[0].name : 'Unknown Artist';
-                    const albumArt = song && song.images && song.images.length > 0 ? song.images[0].url : '';
+                    console.log(song);
+                    const albumArt = song && song.images && song.images.length > 0 ? song.images[0].url : '' || song.album && song.album.images && song.album.images.length > 0 ? song.album.images[0].url : '';
 
                     return (
                         <div 

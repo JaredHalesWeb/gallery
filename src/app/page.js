@@ -13,7 +13,7 @@ const HomePage = () => {
   return (
     <SpotifyProvider>
       <div className="flex flex-col h-screen">
-        <div className="flex flex-1">
+        <div className="flex flex-1 mb-16">
           <Sidebar />
           <MainContent />
         </div>

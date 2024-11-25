@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { SpotifyContext } from '../context/SpotifyProvider';
-// import { FaShuffle, FaRepeat } from 'react-icons/fa'; // Icons for shuffle and repeat
+import { FaShuffle, FaRepeat  } from "react-icons/fa6";
+import { FaPlay, FaPause } from "react-icons/fa";
+import { IoIosSkipBackward, IoIosSkipForward } from "react-icons/io";
 
 const PlaybackUI = () => {
     const { spotify } = useContext(SpotifyContext);
@@ -25,7 +27,7 @@ const PlaybackUI = () => {
                         setIsPlaying(!state.paused);
                     }
                 });
-            }, 1000); // Update progress every 1 second
+            }, 100); // Update progress every 1 second
 
             return () => {
                 clearInterval(updateProgress); // Cleanup interval when component unmounts or when player changes
@@ -94,12 +96,60 @@ const PlaybackUI = () => {
         <div className="fixed bottom-0 w-full p-4 bg-gray-900 text-white flex flex-col items-center">
             {/* Song Info */}
             <div className="w-full">
+                <img
+                    src={currentSong?.images?.[0]?.url || '/Images/RealDinoByte.png'} // Add a fallback URL if no image is available
+                    // alt={currentSong?.name || ""}  // Fallback alt text
+                    className="w-24 h-24 object-cover rounded-lg" // Tailwind class for styling the image
+                />
                 <h3 className="text-lg">{currentSong ? currentSong.name : "No song playing"}</h3>
                 <p className="text-sm">{currentSong ? currentSong.artists[0].name : ""}</p>
             </div>
 
+            {/* Controls */}
+            <div className="flex items-center space-x-4 mt-4">
+                <button className="p-2 bg-gray-700 rounded" onClick={handlePrev}><IoIosSkipBackward /></button>
+                <button id="togglePlay" className="p-2 bg-gray-700 rounded" onClick={togglePlay}>
+                    {isPlaying ? <FaPause /> : <FaPlay />}
+                </button>
+                <button className="p-2 bg-gray-700 rounded" onClick={handleNext}><IoIosSkipForward /></button>
+            </div>
+
+            {/* Shuffle and Loop buttons on the right */}
+            <div className="flex space-x-4 mt-7 absolute right-20 top-4">
+                {/* Shuffle Button */}
+                <button
+                    className={`p-2 bg-gray-700 rounded-full ${isShuffling ? 'text-white' : 'text-gray-500'}`}
+                    onClick={toggleShuffle}
+                >
+                    <FaShuffle />
+                </button>
+
+                {/* Loop Button */}
+                <button
+                    className={`p-2 bg-gray-700 rounded-full ${isLooping ? 'text-white' : 'text-gray-500'}`}
+                    onClick={toggleLoop}
+                >
+                    <FaRepeat />
+                </button>
+            </div>
+
+            {/* Volume Control at the bottom-left corner */}
+            <div className="absolute bottom-5 right-10 w-32">
+                <label htmlFor="volume" className="text-sm">Volume</label>
+                <input
+                    id="volume"
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    className="w-full"
+                    onChange={handleVolumeChange}
+                />
+            </div>
+
             {/* Progress Bar */}
-            <div className="w-full mt-2">
+            <div className="w-[60vw] mt-2">
                 <input
                     type="range"
                     min="0"
@@ -115,50 +165,6 @@ const PlaybackUI = () => {
                 </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex items-center space-x-4 mt-4">
-                <button className="p-2 bg-gray-700 rounded" onClick={handlePrev}>Prev</button>
-                <button id="togglePlay" className="p-2 bg-gray-700 rounded" onClick={togglePlay}>
-                    {isPlaying ? 'Pause' : 'Play'}
-                </button>
-                <button className="p-2 bg-gray-700 rounded" onClick={handleNext}>Next</button>
-            </div>
-
-            {/* Shuffle and Loop buttons on the right */}
-            <div className="flex space-x-4 mt-4 absolute right-8 bottom-4">
-                {/* Shuffle Button */}
-                <button
-                    className={`p-2 bg-gray-700 rounded-full ${isShuffling ? 'text-white' : 'text-gray-500'}`}
-                    onClick={toggleShuffle}
-                >
-                    shuffle
-                    {/* <FaShuffle /> */}
-                </button>
-
-                {/* Loop Button */}
-                <button
-                    className={`p-2 bg-gray-700 rounded-full ${isLooping ? 'text-white' : 'text-gray-500'}`}
-                    onClick={toggleLoop}
-                >
-                    loop
-                    {/* <FaRepeat /> */}
-                </button>
-            </div>
-
-            {/* Volume Control at the bottom-left corner */}
-            <div className="absolute bottom-4 left-4 w-32">
-                <label htmlFor="volume" className="text-sm">Volume</label>
-                <input
-                    id="volume"
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={volume}
-                    className="w-full"
-                    onChange={handleVolumeChange}
-                />
-            </div>
         </div>
     );
 };

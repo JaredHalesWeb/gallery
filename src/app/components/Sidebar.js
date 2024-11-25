@@ -15,7 +15,7 @@ const Sidebar = () => {
 
     return (
         <div className="w-1/4 h-screen bg-gray-800 text-white p-4">
-            <img src="/Images/DinoByte.png" alt="DinoByte" style={{ width: '100px', height: '100px' }} />
+            <img src="/Images/RealDinoByte.png" alt="DinoByte" style={{ width: '100px', height: '100px' }} />
             <h2 className="text-2xl font-bold mb-6">DinoByte</h2>
             <nav>
                 <ul className="space-y-3 text-xl">

@@ -91,7 +91,7 @@ const PlaybackUI = () => {
     };
 
     return (
-        <div className="fixed bottom-0 w-full p-4 bg-primary text-white flex flex-col items-center">
+        <div className="fixed bottom-0 w-full p-4 bg-gray-900 text-white flex flex-col items-center">
             {/* Song Info */}
             <div className="w-full">
                 <h3 className="text-lg">{currentSong ? currentSong.name : "No song playing"}</h3>

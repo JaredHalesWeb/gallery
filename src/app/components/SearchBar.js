@@ -11,7 +11,7 @@ const SearchBar = ({ onSearch }) => {
     };
 
     return (
-        <form onSubmit={handleSearch} className="w-full p-4 bg-background flex justify-center">
+        <form onSubmit={handleSearch} className="w-full p-4 bg-gray-100 flex justify-center">
             <input
                 type="text"
                 className="w-3/4 p-2 border rounded text-black"
@@ -19,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
-            <button type="submit" className="p-2 bg-secondary text-black rounded ml-2">
+            <button type="submit" className="p-2 bg-blue-500 text-black rounded ml-2">
                 Search
             </button>
         </form>

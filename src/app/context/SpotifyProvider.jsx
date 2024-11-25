@@ -1,3 +1,5 @@
+"use client"
+
 import { createContext, useEffect, useState } from "react";
 
 export const SpotifyContext = createContext(null);
@@ -6,6 +8,7 @@ export const SpotifyTokenContext = createContext(null);
 export default function SpotifyProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [spotify, setSpotify] = useState(null);
+  const [songCategory, setSongCategory] = useState(null);
 
     useEffect(() => {
       const hash = window.location.hash
@@ -76,7 +79,7 @@ export default function SpotifyProvider({ children }) {
 
   return (
     <SpotifyTokenContext.Provider value={{ accessToken, setAccessToken}}>
-      <SpotifyContext.Provider value={{spotify, setSpotify}}>
+      <SpotifyContext.Provider value={{spotify, setSpotify, songCategory, setSongCategory}}>
         {children}
       </SpotifyContext.Provider>
     </SpotifyTokenContext.Provider>

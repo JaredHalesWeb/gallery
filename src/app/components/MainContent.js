@@ -1,25 +1,38 @@
 // src/components/MainContent.js
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
-import { SpotifyTokenContext } from '../context/SpotifyProvider';
+import { SpotifyContext, SpotifyTokenContext } from '../context/SpotifyProvider';
 import SearchBar from './SearchBar';
 import axios from 'axios';
 
 const MainContent = () => {
     const {accessToken} = useContext(SpotifyTokenContext);
     const [songs, setSongs] = useState([]);
+    const {songCategory} = useContext(SpotifyContext)
 
     const handleSearch = async (query) => {
       if (query) {
         await fetchSongs(query);  // Fetch songs based on search query
       } else {
-        fetchPopularSongs();
+        fetchCategorySongs();
       }
     };
     
-    const fetchPopularSongs = async () => {
+    const fetchCategorySongs = async () => {
+      let url
+      switch(songCategory) {
+        case "trends":
+          url ='https://api.spotify.com/v1/browse/new-releases'
+          break
+        case "playlists":
+          url = "https://api.spotify.com/v1/me/playlists"
+          break
+        default: 
+          url ='https://api.spotify.com/v1/browse/new-releases'
+          break
+      }
       try {
-        const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
+        const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
@@ -27,10 +40,10 @@ const MainContent = () => {
         if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
           setSongs(response.data.albums.items);
         } else {
-          console.error('No popular tracks found.');
+          console.error('No tracks found.');
         }
       } catch (error) {
-        console.error('Error fetching popular songs:', error);
+        console.error('Error fetching songs:', error);
       }
     };
     
@@ -53,8 +66,8 @@ const MainContent = () => {
   };
 
     useEffect(() => {
-        if(accessToken) fetchPopularSongs();
-    }, [accessToken])
+        if(accessToken) fetchCategorySongs();
+    }, [accessToken, songCategory])
     return (
         <div className="w-3/4 p-6">
           <SearchBar onSearch={handleSearch} />

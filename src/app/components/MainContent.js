@@ -49,9 +49,7 @@ const MainContent = () => {
             Authorization: `Bearer ${accessToken}`
           }
         });
-        if (songCategory === "discovery" && response.data.playlists && response.data.playlists.items) { 
-          setSongs(response.data.playlists.items);
-        }else if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
+        if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
           setSongs(response.data.albums.items);
         } else {
           console.error('No tracks found.');
@@ -83,10 +81,10 @@ const MainContent = () => {
         if(accessToken) fetchCategorySongs();
     }, [accessToken, songCategory])
     return (
-        <div className="p-6"> {/* OLD: w-3/4 */}
+        <div className="w-3/4 p-6 ">
           <SearchBar onSearch={handleSearch} />
             <h1 className="text-4xl font-bold mb-4 text-black">Tracks</h1>
-            <div className="grid grid-cols-5 gap-2">  {/* Reduced the gap between columns */}
+            <div className="grid grid-cols-5 gap-4">  {/* Reduced the gap between columns */}
                 {songs.map((song, index) => {
                     const albumName = song ? song.name : 'Unknown Album';
                     const artistName = song.artists && song.artists.length > 0 ? song.artists[0].name : 'Unknown Artist';

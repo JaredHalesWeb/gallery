@@ -24,20 +24,20 @@ const MainContent = () => {
         case "trends":
           url ='https://api.spotify.com/v1/browse/new-releases'
           break
+        case "discovery":
+          url = 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFRY5ok2pxXJ0/playlists';
+          break
         case "playlists":
-          url = "https://api.spotify.com/v1/me/playlists"
+        url = "https://api.spotify.com/v1/me/playlists"
           break
-          case "discovery":
-            url = 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFRY5ok2pxXJ0/playlists';
+        case "rec":
+        url ='https://api.spotify.com/v1/recommendations'
+        break
+        case "fav":
+        url ='https://api.spotify.com/v1/me/top/tracks?locale=en-US,en;q%3D0.9'
           break
-          case "rec":
-          url ='https://api.spotify.com/v1/recommendations'
-          break
-          case "fav":
-          url ='https://api.spotify.com/v1/me/top/tracks?locale=en-US,en;q%3D0.9'
-          break
-          case "favA":
-          url ='https://api.spotify.com/v1/me/top/artists?locale=en-US,en;q%3D0.9'
+        case "favA":
+        url ='https://api.spotify.com/v1/me/top/artists?locale=en-US,en;q%3D0.9'
           break
         default: 
           url ='https://api.spotify.com/v1/browse/new-releases'

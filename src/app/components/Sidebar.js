@@ -21,7 +21,7 @@ const Sidebar = () => {
                 <ul className="space-y-3 text-xl">
                     <li className='hover:bg-orange-400'><Link href={"/"}>Home</Link></li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Trends</li>
-                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("discover")}>Discovery</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("discovery")}>Discovery</li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("playlists")}>Library</li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("rec")}>Recommendations</li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("fav")}>Favorites</li>

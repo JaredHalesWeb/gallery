@@ -85,7 +85,7 @@ const MainContent = () => {
     }, [accessToken, songCategory])
 
     return (
-        <div className="p-6 "> {/* OLD: w-3/4 */}
+        <div className="p-6 rounded-sm"> {/* OLD: w-3/4 */}
           <SearchBar onSearch={handleSearch} />
             <h1 className="text-4xl font-bold mb-4 text-orange-400 Category-text">{songCategory}</h1>
             <div className="grid grid-cols-5 gap-4">  {/* Reduced the gap between columns */}
@@ -110,7 +110,7 @@ const MainContent = () => {
                     return (
                         <div 
                             key={index} 
-                            className="rounded cursor-pointer relative bg-cover bg-center album-container" 
+                            className="rounded cursor-pointer relative bg-cover bg-center album-container rounded-lg" 
                             onClick={() => {
                                 console.log(song);
                                 window.open(song.uri)
@@ -124,7 +124,7 @@ const MainContent = () => {
                                 margin: '0 auto' // Centers the div within its container
                             }}
                         >
-                            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center">
+                            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center rounded-lg">
                                 <p className="text-white font-bold">{albumName}</p>
                                 <p className={`text-white ${song.description ? 'text-sm' : 'text-base'} truncate-text`}
                                   title={typeof artistContent === 'string' ? artistContent : ''}>

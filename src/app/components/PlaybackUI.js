@@ -8,8 +8,6 @@ const PlaybackUI = () => {
     const { spotify } = useContext(SpotifyContext);
     const currentSong = spotify?.currentSong;
 
-    const [isVisible, setIsVisible] = useState(true);
-
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -115,12 +113,11 @@ const PlaybackUI = () => {
     };
 
     return (
-        <div className="fixed bottom-0 w-full p-9 bg-gray-900 text-white flex flex-col items-center">
+        <div className="fixed bottom-0 w-full p-12 bg-gray-900 text-white flex flex-col items-center">
             {/* Song Info */}
             <div className="fixed w-30 left-20 bottom-10">
                 <img
-                    src={currentSong?.images?.[0]?.url || '/Images/RealDinoByte.png'} // Add a fallback URL if no image is available
-                    // alt={currentSong?.name || ""}  // Fallback alt text
+                    src={currentSong ? currentSong?.images?.[0]?.url : '/Images/RealDinoByte.png'}
                     className="w-24 h-24 object-cover rounded-lg" // Tailwind class for styling the image
                 />
                 <h3 className="text-lg">{currentSong ? currentSong.name : "No song playing"}</h3>

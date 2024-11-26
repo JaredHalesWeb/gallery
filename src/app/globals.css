@@ -14,6 +14,10 @@
   }
 }
 
+* {
+  transition: all;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -22,7 +26,45 @@ body {
   padding: 0;
 }
 
-/* html, body, #root { 
-  animation: flicker 1.5s infinite, shimmer 5s linear infinite; 
-  background-color: #1a202c; /* Tailwind's gray-900
-} */
+.album-container {
+  position: relative;
+  transition: all 0.1s ease-in-out; /* Optional zoom effect */
+}
+
+.album-container:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  transition: all 0.1s ease-in-out;
+}
+
+.album-container:hover .truncate-text {
+  -webkit-line-clamp: unset; /* Remove truncation */
+  overflow: visible;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  position: absolute;
+  z-index: 10;
+  max-width: 300px;
+  opacity: 1;
+  transform: scale(1.05); /* Slight zoom effect */
+  transition: all 0.1s ease-in-out;
+}
+
+/* Truncate text initially */
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  transition: all 0.1s ease-in-out;
+  opacity: 1;
+}
+
+/* Add hover styling for the album container */
+.album-container:hover .hover-effect {
+  transform: scale(1.05); /* Optional: scale the entire album */
+  transition: all 0.1s ease-in-out;
+}

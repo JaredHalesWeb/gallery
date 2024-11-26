@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <div className="flex-1 ml-1/4 overflow-y-auto pb-[70rem] md:pb-[50rem] lg:pb-[20rem] xl:pb-[10rem]">
+      <div className="flex-1 ml-1/4 overflow-y-auto pb-[80rem] md:pb-[60rem] lg:pb-[30rem] xl:pb-[20rem]">
       <MainContent />
       </div>
       <div className="fixed bottom-0 w-full">

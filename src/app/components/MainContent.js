@@ -83,10 +83,10 @@ const MainContent = () => {
         if(accessToken) fetchCategorySongs();
     }, [accessToken, songCategory])
     return (
-        <div className="w-3/4 p-6 ">
+        <div className="p-6"> {/* OLD: w-3/4 */}
           <SearchBar onSearch={handleSearch} />
             <h1 className="text-4xl font-bold mb-4 text-black">Tracks</h1>
-            <div className="grid grid-cols-5 gap-4">  {/* Reduced the gap between columns */}
+            <div className="grid grid-cols-5 gap-2">  {/* Reduced the gap between columns */}
                 {songs.map((song, index) => {
                     const albumName = song ? song.name : 'Unknown Album';
                     const artistName = song.artists && song.artists.length > 0 ? song.artists[0].name : 'Unknown Artist';

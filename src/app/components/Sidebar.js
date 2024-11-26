@@ -21,11 +21,11 @@ const Sidebar = () => {
                 <ul className="space-y-3 text-xl">
                     <li className='hover:bg-orange-400'><Link href={"/"}>Home</Link></li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Trends</li>
-                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Discovery</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("discover")}>Discovery</li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("playlists")}>Library</li>
-                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Recent</li>
-                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Favorites</li>
-                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Favorite Artist</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("rec")}>Recommendations</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("fav")}>Favorites</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("favA")}>Favorite Artist</li>
                     <br />
                     <li className='hover:bg-orange-400'><Link href={"/info"}>How to use?</Link></li>
                 </ul>

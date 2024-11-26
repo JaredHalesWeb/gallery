@@ -27,6 +27,18 @@ const MainContent = () => {
         case "playlists":
           url = "https://api.spotify.com/v1/me/playlists"
           break
+          case "discovery":
+            url = 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFRY5ok2pxXJ0/playlists';
+          break
+          case "rec":
+          url ='https://api.spotify.com/v1/recommendations'
+          break
+          case "fav":
+          url ='https://api.spotify.com/v1/me/top/tracks?locale=en-US,en;q%3D0.9'
+          break
+          case "favA":
+          url ='https://api.spotify.com/v1/me/top/artists?locale=en-US,en;q%3D0.9'
+          break
         default: 
           url ='https://api.spotify.com/v1/browse/new-releases'
           break
@@ -37,7 +49,9 @@ const MainContent = () => {
             Authorization: `Bearer ${accessToken}`
           }
         });
-        if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
+        if (songCategory === "discovery" && response.data.playlists && response.data.playlists.items) { 
+          setSongs(response.data.playlists.items);
+        }else if (response?.data.albums?.items && response?.data.albums?.items.length > 0) {
           setSongs(response.data.albums.items);
         } else {
           console.error('No tracks found.');

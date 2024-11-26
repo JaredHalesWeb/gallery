@@ -10,8 +10,8 @@ import SpotifyProvider from './context/SpotifyProvider';
 const HomePage = () => {
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-1">
+    <div className="flex flex-col h-screen overflow-y-auto">
+      <div className="flex flex-1 h-screen">
         <Sidebar />
         <MainContent />
       </div>

@@ -22,4 +22,7 @@ body {
   padding: 0;
 }
 
-
+/* html, body, #root { 
+  animation: flicker 1.5s infinite, shimmer 5s linear infinite; 
+  background-color: #1a202c; /* Tailwind's gray-900
+} */

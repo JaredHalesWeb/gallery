@@ -19,15 +19,15 @@ const Sidebar = () => {
             <h2 className="text-2xl font-bold mb-6">DinoByte</h2>
             <nav>
                 <ul className="space-y-3 text-xl">
-                    <li className='hover:bg-blue-300'><Link href={"/"}>Home</Link></li>
-                    <li className='cursor-pointer hover:bg-blue-300' onClick={() => handleClick("trends")}>Trends</li>
-                    <li className='cursor-pointer hover:bg-blue-300' onClick={() => handleClick("trends")}>Discovery</li>
-                    <li className='cursor-pointer hover:bg-blue-300' onClick={() => handleClick("playlists")}>Library</li>
-                    <li className='cursor-pointer hover:bg-blue-300' onClick={() => handleClick("trends")}>Recent</li>
-                    <li className='cursor-pointer hover:bg-blue-300' onClick={() => handleClick("trends")}>Favorites</li>
-                    <li className='cursor-pointer hover:bg-blue-300' onClick={() => handleClick("trends")}>Favorite Artist</li>
+                    <li className='hover:bg-orange-400'><Link href={"/"}>Home</Link></li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Trends</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Discovery</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("playlists")}>Library</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Recent</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Favorites</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("trends")}>Favorite Artist</li>
                     <br />
-                    <li className='hover:bg-blue-300'><Link href={"/info"}>How to use?</Link></li>
+                    <li className='hover:bg-orange-400'><Link href={"/info"}>How to use?</Link></li>
                 </ul>
             </nav>
         </div>

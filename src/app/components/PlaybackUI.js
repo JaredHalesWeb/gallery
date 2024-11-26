@@ -93,9 +93,9 @@ const PlaybackUI = () => {
     };
 
     return (
-        <div className="fixed bottom-0 w-full p-4 bg-gray-900 text-white flex flex-col items-center">
+        <div className="fixed bottom-0 w-full p-9 bg-gray-900 text-white flex flex-col items-center">
             {/* Song Info */}
-            <div className="w-full">
+            <div className="fixed w-30 left-20 bottom-10">
                 <img
                     src={currentSong?.images?.[0]?.url || '/Images/RealDinoByte.png'} // Add a fallback URL if no image is available
                     // alt={currentSong?.name || ""}  // Fallback alt text
@@ -115,7 +115,7 @@ const PlaybackUI = () => {
             </div>
 
             {/* Shuffle and Loop buttons on the right */}
-            <div className="flex space-x-4 mt-7 absolute right-20 top-4">
+            <div className="flex space-x-4 mt-7 absolute right-20 top-3">
                 {/* Shuffle Button */}
                 <button
                     className={`p-2 bg-gray-700 rounded-full ${isShuffling ? 'text-white' : 'text-gray-500'}`}
@@ -134,7 +134,7 @@ const PlaybackUI = () => {
             </div>
 
             {/* Volume Control at the bottom-left corner */}
-            <div className="absolute bottom-5 right-10 w-32">
+            <div className="absolute bottom-8 right-10 w-32">
                 <label htmlFor="volume" className="text-sm">Volume</label>
                 <input
                     id="volume"

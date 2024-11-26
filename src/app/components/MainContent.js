@@ -23,25 +23,25 @@ const MainContent = () => {
       switch(songCategory) {
         case "trends":
           url ='https://api.spotify.com/v1/browse/new-releases'
-          break
+        break
         case "discovery":
           url = 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFRY5ok2pxXJ0/playlists';
-          break
+        break
         case "playlists":
-        url = "https://api.spotify.com/v1/me/playlists"
-          break
+          url = "https://api.spotify.com/v1/users/ht9v4e4j22lb7bquxk505k7zx/playlists?offset=0&limit=50&locale=en-US,en;q%3D0.9"
+        break
         case "rec":
-        url ='https://api.spotify.com/v1/recommendations'
+          url ='https://api.spotify.com/v1/recommendations'
         break
         case "fav":
-        url ='https://api.spotify.com/v1/me/top/tracks?locale=en-US,en;q%3D0.9'
-          break
+          url ='https://api.spotify.com/v1/me/top/tracks?locale=en-US,en;q%3D0.9'
+        break
         case "favA":
-        url ='https://api.spotify.com/v1/me/top/artists?locale=en-US,en;q%3D0.9'
-          break
+          url ='https://api.spotify.com/v1/me/top/artists?locale=en-US,en;q%3D0.9'
+        break
         default: 
           url ='https://api.spotify.com/v1/browse/new-releases'
-          break
+        break
       }
       try {
         const response = await axios.get(url, {

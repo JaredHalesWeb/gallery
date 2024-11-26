@@ -10,12 +10,14 @@ import SpotifyProvider from './context/SpotifyProvider';
 const HomePage = () => {
 
   return (
-    <div className="flex flex-col h-screen overflow-y-auto">
-      <div className="flex flex-1 h-screen">
-        <Sidebar />
-        <MainContent />
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex-1 ml-1/4 overflow-y-auto pb-[70rem] md:pb-[50rem] lg:pb-[20rem] xl:pb-[10rem]">
+      <MainContent />
       </div>
+      <div className="fixed bottom-0 w-full">
         <PlaybackUI />
+      </div>
     </div>
   );
 };

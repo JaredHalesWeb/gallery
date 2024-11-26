@@ -8,6 +8,8 @@ const PlaybackUI = () => {
     const { spotify } = useContext(SpotifyContext);
     const currentSong = spotify?.currentSong;
 
+    const [isVisible, setIsVisible] = useState(true);
+
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -34,6 +36,26 @@ const PlaybackUI = () => {
             };
         }
     }, [spotify?.player]);
+
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         const scrollHeight = document.documentElement.scrollHeight;
+    //         const scrollTop = document.documentElement.scrollTop;
+    //         const clientHeight = document.documentElement.clientHeight;
+
+    //         if (scrollHeight - scrollTop - clientHeight < 100) {
+    //             setIsVisible(false);
+    //         } else {
+    //             setIsVisible(true);
+    //         }
+    //     };
+
+    //     window.addEventListener('scroll', handleScroll);
+
+    //     return () => {
+    //         window.addEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
     const togglePlay = () => {
         if (spotify.player) {

@@ -117,7 +117,7 @@ const PlaybackUI = () => {
             {/* Song Info */}
             <div className="fixed w-30 left-20 bottom-10">
                 <img
-                    src={currentSong ? currentSong?.images?.[0]?.url : '/Images/RealDinoByte.png'}
+                    src={currentSong ? currentSong?.album.images?.[0]?.url : '/Images/RealDinoByte.png'}
                     className="w-24 h-24 object-cover rounded-lg" // Tailwind class for styling the image
                 />
                 <h3 className="text-lg">{currentSong ? currentSong.name : "No song playing"}</h3>

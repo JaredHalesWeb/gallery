@@ -8,7 +8,7 @@ export const SpotifyTokenContext = createContext(null);
 export default function SpotifyProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [spotify, setSpotify] = useState(null);
-  const [songCategory, setSongCategory] = useState(null);
+  const [songCategory, setSongCategory] = useState("Made For You");
 
     useEffect(() => {
       const hash = window.location.hash

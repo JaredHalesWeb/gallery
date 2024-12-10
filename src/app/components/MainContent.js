@@ -10,13 +10,11 @@ const MainContent = () => {
     const [songs, setSongs] = useState([]);
     const {songCategory} = useContext(SpotifyContext)
 
-    // songCategory = ""
-
     const handleSearch = async (query) => {
       if (query) {
         await fetchSongs(query);  // Fetch songs based on search query
       } else {
-        fetchCategorySongs();
+        fetchSongs(songCategory);
       }
     };
     
@@ -24,7 +22,7 @@ const MainContent = () => {
       let url
       switch(songCategory) {
         case "Jazz":
-          url ="https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFAJ5xb0fwo9m/playlists"
+          url ="https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFRY5ok2pxXJ0/playlists"
           break
         case "New Releases":
           url = "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFGaKcChsSgUO/playlists"
@@ -40,6 +38,9 @@ const MainContent = () => {
           break
         case "Pop":
           url ="https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFEC4WFtoNRpw/playlists"
+          break
+        case ".-. .- -. -.. --- --":
+          url =""
           break
         default: 
           url ='https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3/playlists'
@@ -81,7 +82,7 @@ const MainContent = () => {
   };
 
     useEffect(() => {
-        if(accessToken) fetchCategorySongs();
+        if(accessToken) fetchSongs(songCategory);
     }, [accessToken, songCategory])
 
     return (

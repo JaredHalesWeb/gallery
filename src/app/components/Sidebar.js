@@ -26,6 +26,7 @@ const Sidebar = () => {
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("Hip-Hop")}>Hip-Hop</li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("Country")}>Country</li>
                     <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick("Pop")}>Pop</li>
+                    <li className='cursor-pointer hover:bg-orange-400' onClick={() => handleClick(".-. .- -. -.. --- --")}>...</li>
                     <br />
                     <li className='hover:bg-orange-400'><Link href={"/info"}>How to use?</Link></li>
                 </ul>
